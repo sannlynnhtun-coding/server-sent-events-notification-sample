@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .notification {
+        background: #e7f3ff; color: #004085; border-left: 5px solid #007bff;
+        padding: 1rem; margin-bottom: 1rem; border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">Live Announcements</h1>
+</div>
+
+<div id="notifications" class="mt-4"></div>
+
+@section Scripts {
+    <script>
+        const source = new EventSource('/api/announcements/stream');
+        const notificationsDiv = document.getElementById('notifications');
+
+        source.addEventListener('announcement', (event) => {
+            const message = event.data;
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notificationsDiv.prepend(notification);
+        });
+
+        source.onerror = () => {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'notification';
+            errorDiv.style.background = '#f8d7da';
+            errorDiv.textContent = 'Connection to the server was lost.';
+            notificationsDiv.prepend(errorDiv);
+            source.close();
+        };
+    </script>
+}

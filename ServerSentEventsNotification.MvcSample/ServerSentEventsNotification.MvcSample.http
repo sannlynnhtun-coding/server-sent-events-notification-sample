@@ -1,0 +1,19 @@
+@baseUrl = http://localhost:7190
+
+###
+# @name postAnnouncement
+# Send a new announcement to the server.
+# The server will then broadcast this message to all connected clients.
+POST {{baseUrl}}/api/announcements
+Content-Type: application/json
+
+"This is a test announcement from the .http file!"
+
+###
+# @name streamAnnouncements
+# Subscribe to the server-sent events stream to receive announcements.
+# This request will keep the connection open to receive new events.
+GET {{baseUrl}}/api/announcements/stream
+Accept: text/event-stream
+
+###

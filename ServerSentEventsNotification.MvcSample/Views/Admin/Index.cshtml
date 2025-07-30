@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="text-center">
+    <h2>Send an Announcement</h2>
+    <form id="announceForm">
+        <div class="form-group">
+            <textarea id="message" class="form-control" rows="3" placeholder="Type your message..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Send to All Users</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('announceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const messageInput = document.getElementById('message');
+            const message = messageInput.value;
+
+            await fetch('/api/announcements', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(message)
+            });
+
+            messageInput.value = '';
+        });
+    </script>
+}
